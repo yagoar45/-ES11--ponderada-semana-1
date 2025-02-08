@@ -21,6 +21,9 @@ O objetivo é explorar as principais características dos dados, identificar rel
 
 ### Carregamento dos Dados
 
+Agora, vamos carregar os dados do arquivo CSV e visualizar as primeiras linhas para entender sua estrutura.
+
+
 ```{r load-data}
 # Carregar bibliotecas
 library(readr)
@@ -36,6 +39,8 @@ head(data)
 
 ### Verificação da Estrutura dos Dados  
 
+Vamos verificar a estrutura dos dados, identificando os tipos de cada coluna e conferindo se há colunas numéricas que podemos analisar mais a fundo.
+
 ```{r structure-data}
 str(data)
 ```
@@ -43,6 +48,8 @@ str(data)
 ## 2. Resumo Estatístico e Descrição dos Dados
 
 ### Resumo Estatístico
+
+Agora, vamos gerar um resumo estatístico dos dados para entender as distribuições de cada variável numérica, como médias, medianas e quartis.
 
 ```{r summary-data}
 summary(data)
@@ -67,6 +74,8 @@ summary(data)
 ## 3. Análise Univariada
 
 ### Distribuição das Variáveis
+
+Agora, vamos analisar a distribuição da variável LOC_ID, visualizando a quantidade de ocorrências de cada valor dessa variável.
 
 ```{r univariate-analysis}
 # Verifica se a variável existe no dataset
@@ -95,6 +104,8 @@ if ("LOC_ID" %in% colnames(data)) {
 
 ### Identificação de Outliers
 
+Vamos identificar a presença de outliers na variável LOC_ID por meio de um boxplot.
+
 ```{r boxplot-analysis}
 
   # Remover espaços e converter para numérico, mantendo valores válidos
@@ -120,6 +131,8 @@ if ("LOC_ID" %in% colnames(data)) {
 
 ### Relação entre Variáveis
 
+Agora, vamos analisar a relação entre as variáveis LOC_ID e POS_ID através de um gráfico de dispersão para ver se há uma correlação visual.
+
 ```{r scatter-plot}
 ggplot(data, aes(x = LOC_ID, y = POS_ID)) +
   geom_point(color = "blue") +
@@ -127,6 +140,8 @@ ggplot(data, aes(x = LOC_ID, y = POS_ID)) +
 ```
 
 ### Análise de Correlação
+
+Agora, vamos calcular e visualizar a correlação entre todas as variáveis numéricas presentes no dataset, o que pode nos ajudar a identificar relações fortes entre elas.
 
 ```{r correlation-analysis}
 corr_matrix <- cor(data[, sapply(data, is.numeric)])
@@ -136,6 +151,8 @@ corrplot(corr_matrix, method="circle")
 ## 5. Análise Multivariada
 
 ### Análise de Componentes Principais (PCA)
+
+Para reduzir a dimensionalidade dos dados e identificar padrões gerais, vamos realizar uma Análise de Componentes Principais (PCA).
 
 ```{r pca-analysis}
 # Carregar biblioteca para PCA
