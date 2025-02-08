@@ -13,9 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introdução
 
-Este relatório apresenta uma análise exploratória de dados com base em um conjunto fornecido. O objetivo é explorar as principais características dos dados, identificar relações entre variáveis e discutir descobertas relevantes.
+Este relatório apresenta uma análise exploratória de dados com base no arquivo "InteliFalhas.csv".
 
-## Carregamento e Visualização Inicial dos Dados
+O objetivo é explorar as principais características dos dados, identificar relações entre variáveis e discutir descobertas relevantes.
+
+## 1. Carregamento e Preparação dos Dados
+
+### Carregamento dos Dados
 
 ```{r load-data}
 # Carregar bibliotecas
@@ -24,61 +28,118 @@ library(dplyr)
 library(ggplot2)
 library(corrplot)
 
-# Substituir pelo caminho do arquivo correto
-data <- read.csv("caminho/do/arquivo.csv")
+data <- read.csv("./inteliFalhas.csv")
 
 # Visualizar as primeiras linhas
 head(data)
 ```
 
-## Verificação da Estrutura dos Dados
+### Verificação da Estrutura dos Dados  
 
 ```{r structure-data}
 str(data)
 ```
 
-## Resumo Estatístico e Descrição das Variáveis
+## 2. Resumo Estatístico e Descrição dos Dados
+
+### Resumo Estatístico
 
 ```{r summary-data}
 summary(data)
 ```
 
-Descrever as variáveis com base nos resultados acima, indicando tipos e relevância.
+#### Descrição das Variáveis
+* ID: Identificador único do registro
+* DATA.DETECCAO: Data em que a falha foi detectada
+* PONTO: Ponto específico da análise
+* LOC_ID: ID da localização
+* LOC: Descrição da localização
+* POS_ID: ID da posição
+* POS: Descrição da posição
+* TYPE_ID: ID do tipo de falha
+* TYPE_TEXT: Descrição textual do tipo de falha
+* VIEW_ID: Identificador da visualização
+* COLUNA: Coluna da falha
+* LINHA: Linha da falha
 
-## Análise Univariada
+
+
+## 3. Análise Univariada
 
 ### Distribuição das Variáveis
 
 ```{r univariate-analysis}
-# Histograma para variáveis contínuas
-hist(data$variavel_continua, main="Distribuição da Variável", xlab="Valores", col="skyblue")
+# Verifica se a variável existe no dataset
+if ("LOC_ID" %in% colnames(data)) {
+  
+  # Remover espaços e converter para numérico, mantendo valores válidos
+  data$LOC_ID <- suppressWarnings(as.numeric(gsub(",", ".", gsub(" ", "", as.character(data$LOC_ID)))))
+  
+  # Checar se a conversão foi bem-sucedida (se há valores numéricos válidos)
+  if (all(is.na(data$LOC_ID))) {
+    cat("Erro: Todos os valores da variável 'LOC_ID' são inválidos após a conversão. Verifique os dados.\n")
+  } else {
+    # Mostrar os valores únicos após a conversão
+    cat("Valores únicos encontrados na coluna após conversão:\n")
+    print(unique(data$LOC_ID))
+    
+    # Gerar histograma
+    hist(data$LOC_ID, main = "Distribuição da Variável LOC_ID", 
+         xlab = "Valores", col = "skyblue")
+  }
+
+} else {
+  cat("Erro: A coluna 'LOC_ID' não foi encontrada no dataset.\n")
+}
 ```
 
 ### Identificação de Outliers
 
 ```{r boxplot-analysis}
-boxplot(data$variavel_continua, main="Boxplot da Variável", col="tomato")
+
+# Verifica se a variável existe no dataset
+if ("LOC_ID" %in% colnames(data)) {
+  
+  # Remover espaços e converter para numérico, mantendo valores válidos
+  data$LOC_ID <- suppressWarnings(as.numeric(gsub(",", ".", gsub(" ", "", as.character(data$LOC_ID)))))
+  
+  # Checar se a conversão foi bem-sucedida (se há valores numéricos válidos)
+  if (all(is.na(data$LOC_ID))) {
+    cat("Erro: Todos os valores da variável 'LOC_ID' são inválidos após a conversão. Verifique os dados.\n")
+  } else {
+    # Mostrar os valores únicos após a conversão
+    cat("Valores únicos encontrados na coluna após conversão:\n")
+    print(unique(data$LOC_ID))
+    
+    # Gerar boxplot
+    boxplot(data$LOC_ID, main="Boxplot da Variável LOC_ID", col="tomato")
+  }
+
+} else {
+  cat("Erro: A coluna 'LOC_ID' não foi encontrada no dataset.\n")
+}
+
+
 ```
 
-## Análise Bivariada
+## 4. Análise Bivariada
 
 ### Relação entre Variáveis
 
 ```{r scatter-plot}
-ggplot(data, aes(x = variavel1, y = variavel2)) +
+ggplot(data, aes(x = LOC_ID, y = POS_ID)) +
   geom_point(color = "blue") +
-  labs(title = "Relação entre Variáveis", x = "Variável 1", y = "Variável 2")
+  labs(title = "Relação entre LOC_ID e POS_ID", x = "LOC_ID", y = "POS_ID")
 ```
 
 ### Análise de Correlação
 
 ```{r correlation-analysis}
 corr_matrix <- cor(data[, sapply(data, is.numeric)])
-# Visualizar matriz de correlação
 corrplot(corr_matrix, method="circle")
 ```
 
-## Análise Multivariada
+## 5. Análise Multivariada
 
 ### Análise de Componentes Principais (PCA)
 
@@ -86,11 +147,10 @@ corrplot(corr_matrix, method="circle")
 # Carregar biblioteca para PCA
 library(FactoMineR)
 
-# Executar PCA (ajustar para variáveis numéricas do seu dataset)
 pca_result <- PCA(data[, sapply(data, is.numeric)], graph = TRUE)
 ```
 
-## Conclusão e Discussão
+## 6. Conclusão e Discussão
 
 ### Sumário das Descobertas
 
