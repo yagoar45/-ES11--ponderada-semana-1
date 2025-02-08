@@ -1,0 +1,104 @@
+---
+title: "Análise Exploratória de Dados"
+author: "Yago"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introdução
+
+Este relatório apresenta uma análise exploratória de dados com base em um conjunto fornecido. O objetivo é explorar as principais características dos dados, identificar relações entre variáveis e discutir descobertas relevantes.
+
+## Carregamento e Visualização Inicial dos Dados
+
+```{r load-data}
+# Carregar bibliotecas
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+
+# Substituir pelo caminho do arquivo correto
+data <- read.csv("caminho/do/arquivo.csv")
+
+# Visualizar as primeiras linhas
+head(data)
+```
+
+## Verificação da Estrutura dos Dados
+
+```{r structure-data}
+str(data)
+```
+
+## Resumo Estatístico e Descrição das Variáveis
+
+```{r summary-data}
+summary(data)
+```
+
+Descrever as variáveis com base nos resultados acima, indicando tipos e relevância.
+
+## Análise Univariada
+
+### Distribuição das Variáveis
+
+```{r univariate-analysis}
+# Histograma para variáveis contínuas
+hist(data$variavel_continua, main="Distribuição da Variável", xlab="Valores", col="skyblue")
+```
+
+### Identificação de Outliers
+
+```{r boxplot-analysis}
+boxplot(data$variavel_continua, main="Boxplot da Variável", col="tomato")
+```
+
+## Análise Bivariada
+
+### Relação entre Variáveis
+
+```{r scatter-plot}
+ggplot(data, aes(x = variavel1, y = variavel2)) +
+  geom_point(color = "blue") +
+  labs(title = "Relação entre Variáveis", x = "Variável 1", y = "Variável 2")
+```
+
+### Análise de Correlação
+
+```{r correlation-analysis}
+corr_matrix <- cor(data[, sapply(data, is.numeric)])
+# Visualizar matriz de correlação
+corrplot(corr_matrix, method="circle")
+```
+
+## Análise Multivariada
+
+### Análise de Componentes Principais (PCA)
+
+```{r pca-analysis}
+# Carregar biblioteca para PCA
+library(FactoMineR)
+
+# Executar PCA (ajustar para variáveis numéricas do seu dataset)
+pca_result <- PCA(data[, sapply(data, is.numeric)], graph = TRUE)
+```
+
+## Conclusão e Discussão
+
+### Sumário das Descobertas
+
+- Principais descobertas da análise exploratória.
+- Correlações interessantes.
+- Presença de outliers.
+
+### Limitações e Possíveis Melhorias
+
+- Limitações na qualidade ou quantidade de dados.
+- Sugestões para análises futuras.
