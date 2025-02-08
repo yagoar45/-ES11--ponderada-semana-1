@@ -171,4 +171,4 @@ pca_result <- PCA(data[, sapply(data, is.numeric)], graph = TRUE)
 
 - Sugestões para análises futuras.
 
-* É essencial preencher os dados ausentes com métodos estatísticos para evitar que falhas nos registros distorçam a análise. Também é preciso verificar se outliers como LOC_ID = 99 são reais ou apenas erros de coleta. Se houver datas disponíveis, analisar a evolução das falhas ao longo do tempo pode revelar padrões sazonais. Além disso, incluir informações sobre manutenção e ambiente ajudaria a identificar a causa dos problemas em locais específicos.
+* Deveríamos preencher os dados ausentes com métodos estatísticos para evitar que falhas nos registros distorçam a análise. Também é preciso verificar se outliers como LOC_ID = 99 são reais ou apenas erros de coleta. Se houver datas disponíveis, analisar a evolução das falhas ao longo do tempo pode revelar padrões sazonais. Além disso, incluir informações sobre manutenção e ambiente ajudaria a identificar a causa dos problemas em locais específicos.
